@@ -17,3 +17,5 @@ O Watson conversation é uma incrível ferramenta de criação de ChatBot, poré
 <h2>Sexto passo:</h2> Pronto, agora temos nosso projeto quase pronto para rodar. Volte ao terminal, na pasta raiz do projeto e rode o comando: <h3>npm install</h3> Isso irá instalar todos os módulos que são necessários.
 <h2>Sétimo passo:</h2> Agora sim, nosso projeto pode funcionar. Rode o comando: <h3>node app.js</h3> e ele estará funcionando no seu computador.
 <h2>Oitavo e último passo:</h2>Acesse localhost:5000 e teste seu bot.
+
+<h2>Qualquer dúvidas ou sugestões vocês podem enviar para gabriel.bolzi@ibm.com</h2>
