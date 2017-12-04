@@ -1,5 +1,5 @@
 <h1>Watson Conversation com Watson Discovery</h1>
-<h3>O projeto consiste em mesclar dois serviços do <b>Watson</b> disponiveis em cloud para criar uma variedade e consistência nas respostas.</h3>
+<h3>O projeto consiste em mesclar dois serviços do <b>Watson</b> disponiveis em cloud para garantir que o bot consiga responder perguntas que não são reconhecidas pela inteligência artificial.</h3>
 O Watson conversation é uma incrível ferramenta de criação de ChatBot, porém um grande problema de chatbots é o set de informações necessárias para que ele possa responder um gama maior de perguntas. Para isso, podemos incluir o Watson Discovery, que é capaz de digerir documentos e pesquisar por certas propriedades nesses documentos em forma de Query e gerando uma resposta. Um caso real de uso dessas duas tecnologias é este chatbot da hyundai: <h3> https://br-hnd-dlg.mybluemix.net/cdn/dialog.html </h3> Ele tem como objetivo responder perguntas sobre 2 modelos de carro e para isso, o discovery foi alimentado com manuais, é muito interessante ver como o site funciona. 
 
 <h1>Passo a passo</h1>
