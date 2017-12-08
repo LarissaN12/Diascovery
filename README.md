@@ -18,6 +18,6 @@ O Watson conversation é uma incrível ferramenta de criação de ChatBot, poré
 <h2>Sétimo passo:</h2> Agora sim, nosso projeto pode funcionar. Rode o comando: <h3>node app.js</h3> e ele estará funcionando no seu computador.
 <h2>Oitavo e último passo:</h2>Acesse localhost:5000 e teste seu bot.
 
-<h1>Vídeo com passo a passo <video src="https://www.youtube.com/watch?v=SxFgce-WnZA&t=3s" width="320" height="200" controls preload></video></h1>
+<h1>Vídeo com passo a passo [![Watch the video](https://raw.github.com/GabLeRoux/WebMole/master/ressources/WebMole_Youtube_Video.png)](https://www.youtube.com/watch?v=SxFgce-WnZA&t=3s)</h1>
 
 <h2>Qualquer dúvidas ou sugestões vocês podem enviar para gabriel.bolzi@ibm.com</h2>
