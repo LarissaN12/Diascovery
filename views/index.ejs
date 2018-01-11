@@ -3,7 +3,10 @@
   <head>
     <title>Watson Conversation</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
       var context = {}
@@ -12,12 +15,21 @@
       function updateChat(user, message){
         if(message){
           var div = document.createElement("div");
+          var date = new Date();
+          var horas = date.getHours();
+          var minutos = date.getMinutes();
+          var segundos = date.getSeconds();
+
+          var newdate = horas + ":" + minutos + ":" + segundos;
+
           if(user == "Watson"){
-            div.innerHTML = "<b>" + user + "</b>: <div class='alert alert-primary' role='alert'>" + message + "</div>";
+            div.innerHTML =  '</b> <div class="message-candidate center-block chat" id="history">              <div class="row">                <div class="col-xs-8 col-md-6">                  <img src="https://upload.wikimedia.org/wikipedia/en/0/00/IBM_Watson_Logo_2017.png" class="message-photo">                  <h4 class="message-name">Watson</h4>                </div>                <div class="col-xs-4 col-md-6 text-right message-date">'+ newdate +'</div>              </div>              <div class="row message-text"> '+ message +   '          </div></div>';
+            document.getElementById("messages").append(div);
           }else{
-            div.innerHTML = "<b>" + user + "</b>: <div class='alert alert-secondary' role='alert'>" + message + "</div>";
+            div.innerHTML =  '</b> <div class="message-hiring-manager center-block chat" id="history1">              <div class="row">                <div class="col-xs-8 col-md-6">                  <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" class="message-photo">                  <h4 class="message-name">Você</h4>                </div>                <div class="col-xs-4 col-md-6 text-right message-date">'+ newdate +'</div>              </div>              <div class="row message-text"> '+ message +   '          </div></div>';
+            document.getElementById("messages").append(div);
           }
-          document.getElementById("history").appendChild(div);
+
           document.getElementById("text").value = "";
           }
       }
@@ -30,8 +42,8 @@
         var k = 1;
         if(text){ payload.input = {"text": text};};
         if(context) {payload.context = context;};
-        
-        var xhr = new XMLHttpRequest(); 
+
+        var xhr = new XMLHttpRequest();
         xhr.onreadystatechange =  function(){
           if(xhr.readyState == 4){
             if(xhr.status == 200){
@@ -66,21 +78,139 @@
       }
     </script>
 
+    <style>
+        .center {
+          width: 100%;
+          height: 100%;
+          display: table;
+          text-align: center;
+      }
+
+      .middle {
+          display: table-cell;
+          vertical-align: middle;
+      }
+
+          .message-candidate {
+      background: rgba(223, 229, 121, 0.9);
+      padding: 40px;
+      margin-bottom: 10px;
+      /* max-width: 600px;
+      margin-bottom: 10px; */
+      }
+
+      .message-hiring-manager {
+      background: rgba(0, 167, 204, 0.9);
+      padding: 40px;
+      /* max-width: 600px; */
+      margin-bottom: 10px;
+      }
+
+      /* .messaging {
+      max-width: 600px;
+      margin-top: 20px;
+      } */
+
+      .message-text {
+      margin-top: 10px;
+      }
+
+      .message-photo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center center;
+      display: inline-block;
+      }
+
+      .message-name {
+      margin-left: 10px;
+      display: inline-block;
+      }
+
+      .absolutemenu {
+        position:absolute;
+        width:100%;
+        top:0;
+        left:0;
+      }
+    </style>
+
   </head>
   <body onLoad="init()">
-    <div style="height: 100%; height:100%; padding:1%;" id="troll" class="rounded border border-dark">
-      <button style="display:none;" id="fade"  class="btn btn-danger float-left">Clique aqui para começar a conversa!</button>
+    <header>
+      <div class='absolutemenu'>
+      <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="http://localhost:5000">Navegação</a>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="http://localhost:5000">Inicio <span class="sr-only">(current)</span></a>
+      </li>
+        <li class="nav-item">
+          <a class="nav-link" href="http://localhost:5000/bd">Banco de dados</a>
+        </li>
+  </div>
+</nav></div>
+    </header>
+    <!-- <div style="height: 100%; height:100%; padding:1%;" id="troll" class="rounded border border-dark">
       <div  class="text-center" style="margin-bottom: 2%">
         <b style="font-size: 2em;">IBM Watson Conversation</b>
       </div>
       <div class="input-group">
           <span class="input-group-btn">
-            <button class="btn btn-success" type="submit" onclick="sendMessage()">Enviar</button>
           </span>
-          <input type="text" id="text" class="form-control" placeholder="Escreva sua mensagem e envie para o Watson...">
       </div>
       <p/><div class="text-center" style="font-size: 2em;"><b>Histórico da conversa</b></div>
       <p/><div id="history"></div>
+    </div> -->
+
+<div class='center'><div class='middle'>
+    <h2 class="text-center" style="margin-top: 2">Watson</h2>
+<div class="container">
+  <div class="messages" id="messages">
+  <!-- <div class="message-candidate center-block chat" id="history">
+    <div class="row">
+      <div class="col-xs-8 col-md-6">
+        <img src="https://upload.wikimedia.org/wikipedia/en/0/00/IBM_Watson_Logo_2017.png" class="message-photo">
+        <h4 class="message-name">Watson</h4>
+      </div>
+      <div class="col-xs-4 col-md-6 text-right message-date">Date here</div>
     </div>
+    <div class="row message-text">
+
+    </div>
+  </div>
+  <div class="message-hiring-manager center-block chat" id="history1">
+    <div class="row">
+      <div class="col-xs-8 col-md-6">
+        <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" class="message-photo">
+        <h4 class="message-name">You</h4>
+      </div>
+      <div class="col-xs-4 col-md-6 text-right message-date">Date here</div>
+    </div>
+    <div class="row message-text ">
+-->
+    </div>
+
+  <div class="messaging center-block">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="input-group">
+          <input type="text" id="text" class="form-control" placeholder="Escreva...">
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="submit" onclick="sendMessage()">Enviar</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div></div>
+
   </body>
 </html>

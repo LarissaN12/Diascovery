@@ -43,6 +43,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(5000 || ENV['PORT'])
+app.listen(5000 || ENV['PORT'] || process.env.PORT)
 
 module.exports = app;
