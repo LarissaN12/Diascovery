@@ -1,216 +1,147 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Watson Conversation</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <title>Chatbot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8" name="robots" content="noindex"/>
+    <script src='//production-assets.codepen.io/assets/editor/live/console_runner-079c09a0e3b9ff743e39ee2d5637b9216b3545af0de366d4b9aad9dc87e26bfd.js'></script>
+    <!-- <script src='//production-assets.codepen.io/assets/editor/live/events_runner-73716630c22bbc8cff4bd0f07b135f00a0bdc5d14629260c3ec49e5606f98fdd.js'></script> -->
+    <script src='//production-assets.codepen.io/assets/editor/live/css_live_reload_init-2c0dc5167d60a5af3ee189d570b1835129687ea2a61bee3513dee3a50c115a77.js'></script>
+    <link rel="shortcut icon" type="image/x-icon" href="//production-assets.codepen.io/assets/favicon/favicon-8ea04875e70c4b0bb41da869e81236e54394d63638a1ef12fa558a4a835f1164.ico" />
+    <link rel="mask-icon" href="//production-assets.codepen.io/assets/favicon/logo-pin-f2d2b6d2c61838f7e76325261b7195c27224080bc099486ddd6dccb469b8e8e6.svg" color="#111" />
+    <link rel="canonical" href="https://codepen.io/emilcarlsson/pen/ZOQZaV?limit=all&page=74&q=contact+" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript">
-      var context = {}
-      var i;
-
-      function updateChat(user, message){
-        if(message){
-          var div = document.createElement("div");
-          var date = new Date();
-          var horas = date.getHours();
-          var minutos = date.getMinutes();
-          var segundos = date.getSeconds();
-
-          var newdate = horas + ":" + minutos + ":" + segundos;
-
-          if(user == "Watson"){
-            div.innerHTML =  '</b> <div class="message-candidate center-block chat" id="history">              <div class="row">                <div class="col-xs-8 col-md-6">                  <img src="https://upload.wikimedia.org/wikipedia/en/0/00/IBM_Watson_Logo_2017.png" class="message-photo">                  <h4 class="message-name">Watson</h4>                </div>                <div class="col-xs-4 col-md-6 text-right message-date">'+ newdate +'</div>              </div>              <div class="row message-text"> '+ message +   '          </div></div>';
-            document.getElementById("messages").append(div);
-          }else{
-            div.innerHTML =  '</b> <div class="message-hiring-manager center-block chat" id="history1">              <div class="row">                <div class="col-xs-8 col-md-6">                  <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" class="message-photo">                  <h4 class="message-name">Você</h4>                </div>                <div class="col-xs-4 col-md-6 text-right message-date">'+ newdate +'</div>              </div>              <div class="row message-text"> '+ message +   '          </div></div>';
-            document.getElementById("messages").append(div);
-          }
-
-          document.getElementById("text").value = "";
-          }
-      }
-
-      function sendMessage(){
-        var text = document.getElementById("text").value;
-        updateChat("You", text);
-
-        var payload = {};
-        var k = 1;
-        if(text){ payload.input = {"text": text};};
-        if(context) {payload.context = context;};
-
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange =  function(){
-          if(xhr.readyState == 4){
-            if(xhr.status == 200){
-              var json = JSON.parse(xhr.responseText);
-              context = json.context;
-              console.log(json);
-              console.log(Array.isArray(json.intents));
-              if(json.matching_results == undefined || Array.isArray(json.intents)){
-              updateChat("Watson", json./*matching_results*/output.text);
-              i = 1;
-              }else{
-                if(i == 1){
-                  for(var d = 0; d < json.passages.length; d++){
-                  updateChat("Watson", json.passages[d].passage_text);
-                  }
-                }
-              }
-            }
-          }
-        }
-        xhr.open("POST", "./conv", true);
-        xhr.setRequestHeader("Content-type", "application/json");
-        xhr.send(JSON.stringify(payload));
-      }
-
-      function init(){
-        document.getElementById("text").addEventListener("keydown", function(e){
-          if(!e){ var e = window.event; }
-          if(e.keyCode == 13){ sendMessage();}
-        }, false);
-        sendMessage();
-      }
-    </script>
-
-    <style>
-        .center {
-          width: 100%;
-          height: 100%;
-          display: table;
-          text-align: center;
-      }
-
-      .middle {
-          display: table-cell;
-          vertical-align: middle;
-      }
-
-          .message-candidate {
-      background: rgba(223, 229, 121, 0.9);
-      padding: 40px;
-      margin-bottom: 10px;
-      /* max-width: 600px;
-      margin-bottom: 10px; */
-      }
-
-      .message-hiring-manager {
-      background: rgba(0, 167, 204, 0.9);
-      padding: 40px;
-      /* max-width: 600px; */
-      margin-bottom: 10px;
-      }
-
-      /* .messaging {
-      max-width: 600px;
-      margin-top: 20px;
-      } */
-
-      .message-text {
-      margin-top: 10px;
-      }
-
-      .message-photo {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      object-position: center center;
-      display: inline-block;
-      }
-
-      .message-name {
-      margin-left: 10px;
-      display: inline-block;
-      }
-
-      .absolutemenu {
-        position:absolute;
-        width:100%;
-        top:0;
-        left:0;
-      }
-    </style>
-
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+    <!-- <script src="https://use.typekit.net/hoy3lrg.js"></script> -->
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'>
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.2/css/font-awesome.min.css'>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
   </head>
-  <body onLoad="init()">
-    <header>
-      <div class='absolutemenu'>
-      <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+  <body>
+    <nav style="position:absolute; top: 0%; width:100%;" class="navbar navbar-toggleable-md navbar-light bg-faded">
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <a class="navbar-brand" href="http://localhost:5000">Navegação</a>
-  <div class="collapse navbar-collapse" id="navbarText">
-    <ul class="navbar-nav mr-auto">
+  <a class="navbar-brand" href="#">Navegação</a>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
       <li class="nav-item active">
-        <a class="nav-link" href="http://localhost:5000">Inicio <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="http://discoverydemobolzi.mybluemix.net">Inicio <span class="sr-only">(current)</span></a>
       </li>
-        <li class="nav-item">
-          <a class="nav-link" href="http://localhost:5000/bd">Banco de dados</a>
-        </li>
+      <li class="nav-item">
+        <a class="nav-link" href="http://discoverydemobolzi.mybluemix.net/bd">Banco de dados</a>
+      </li>
+    </ul>
   </div>
-</nav></div>
-    </header>
-    <!-- <div style="height: 100%; height:100%; padding:1%;" id="troll" class="rounded border border-dark">
-      <div  class="text-center" style="margin-bottom: 2%">
-        <b style="font-size: 2em;">IBM Watson Conversation</b>
-      </div>
-      <div class="input-group">
-          <span class="input-group-btn">
-          </span>
-      </div>
-      <p/><div class="text-center" style="font-size: 2em;"><b>Histórico da conversa</b></div>
-      <p/><div id="history"></div>
-    </div> -->
+</nav>
 
-<div class='center'><div class='middle'>
-    <h2 class="text-center" style="margin-top: 2">Watson</h2>
-<div class="container">
-  <div class="messages" id="messages">
-  <!-- <div class="message-candidate center-block chat" id="history">
-    <div class="row">
-      <div class="col-xs-8 col-md-6">
-        <img src="https://upload.wikimedia.org/wikipedia/en/0/00/IBM_Watson_Logo_2017.png" class="message-photo">
-        <h4 class="message-name">Watson</h4>
-      </div>
-      <div class="col-xs-4 col-md-6 text-right message-date">Date here</div>
-    </div>
-    <div class="row message-text">
-
-    </div>
-  </div>
-  <div class="message-hiring-manager center-block chat" id="history1">
-    <div class="row">
-      <div class="col-xs-8 col-md-6">
-        <img src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" class="message-photo">
-        <h4 class="message-name">You</h4>
-      </div>
-      <div class="col-xs-4 col-md-6 text-right message-date">Date here</div>
-    </div>
-    <div class="row message-text ">
--->
-    </div>
-
-  <div class="messaging center-block">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="input-group">
-          <input type="text" id="text" class="form-control" placeholder="Escreva...">
-          <span class="input-group-btn">
-            <button class="btn btn-default" type="submit" onclick="sendMessage()">Enviar</button>
-          </span>
-        </div>
-      </div>
-    </div>
-  </div>
+    <div id="frame">
+	<div id="sidepanel">
+		<div id="profile">
+			<div class="wrap">
+				<img id="profile-img" src="https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png" class="online" alt="" />
+				<p>You</p>
+				<i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
+				<div id="status-options">
+					<ul>
+						<li id="status-online" class="active"><span class="status-circle"></span> <p>Online</p></li>
+						<li id="status-away"><span class="status-circle"></span> <p>Away</p></li>
+						<li id="status-busy"><span class="status-circle"></span> <p>Ocupado</p></li>
+						<li id="status-offline"><span class="status-circle"></span> <p>Offline</p></li>
+					</ul>
+				</div>
+				<div id="expanded">
+					<label for="twitter"><i class="fa fa-facebook fa-fw" aria-hidden="true"></i></label>
+					<input name="twitter" type="text" value="Gabriel" />
+					<label for="twitter"><i class="fa fa-twitter fa-fw" aria-hidden="true"></i></label>
+					<input name="twitter" type="text" value="Gabriel" />
+					<label for="twitter"><i class="fa fa-instagram fa-fw" aria-hidden="true"></i></label>
+					<input name="twitter" type="text" value="Gabriel" />
+				</div>
+			</div>
+		</div>
+		<div id="search">
+			<label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
+			<input type="text" placeholder="Search contacts..." />
+		</div>
+		<div id="contacts">
+			<ul>
+				<li class="contact active">
+					<div class="wrap">
+						<span class="contact-status busy"></span>
+						<img src="https://upload.wikimedia.org/wikipedia/en/0/00/IBM_Watson_Logo_2017.png" alt="" />
+						<div class="meta">
+							<p class="name">Watson</p>
+							<p class="preview"></p>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div id="bottom-bar">
+			<button id="addcontact"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Adicionar contato</span></button>
+			<button id="settings"><i class="fa fa-cog fa-fw" aria-hidden="true"></i> <span>Configurações</span></button>
+		</div>
+	</div>
+	<div class="content">
+		<div class="contact-profile">
+			<img src="https://upload.wikimedia.org/wikipedia/en/0/00/IBM_Watson_Logo_2017.png" alt="" />
+			<p>Watson</p>
+			<div class="social-media">
+				<i class="fa fa-facebook" aria-hidden="true"></i>
+				<i class="fa fa-twitter" aria-hidden="true"></i>
+				 <i class="fa fa-instagram" aria-hidden="true"></i>
+			</div>
+		</div>
+		<div class="messages">
+			 <ul>
+				<!--<li class="sent">
+					<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+					<p>How the hell am I supposed to get a jury to believe you when I am not even sure that I do?!</p>
+				</li>
+				<li class="replies">
+					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+					<p>When you're backed against the wall, break the god damn thing down.</p>
+				</li>
+				<li class="replies">
+					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+					<p>Excuses don't win championships.</p>
+				</li>
+				<li class="sent">
+					<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+					<p>Oh yeah, did Michael Jordan tell you that?</p>
+				</li>
+				<li class="replies">
+					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+					<p>No, I told him that.</p>
+				</li>
+				<li class="replies">
+					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+					<p>What are your choices when someone puts a gun to your head?</p>
+				</li>
+				<li class="sent">
+					<img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+					<p>What are you talking about? You do what they say or they shoot you.</p>
+				</li>
+				<li class="replies">
+					<img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+					<p>Wrong. You take the gun, or you pull out a bigger one. Or, you call their bluff. Or, you do any one of a hundred and forty six other things.</p>
+				</li>-->
+			</ul>
+		</div>
+		<div class="message-input">
+			<div class="wrap">
+			<input type="text" placeholder="Escreva sua mensagem..." />
+			<i class="fa fa-paperclip attachment" aria-hidden="true"></i>
+			<button class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
+			</div>
+		</div>
+	</div>
 </div>
-</div></div>
+<script src='//production-assets.codepen.io/assets/common/stopExecutionOnTimeout-b2a7b3fe212eaa732349046d8416e00a9dec26eb7fd347590fbced3ab38af52e.js'></script>
+<script src="/javascripts/js.js"></script>
 
   </body>
 </html>
